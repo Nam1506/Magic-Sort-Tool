@@ -19,7 +19,7 @@ MonoBehaviour:
   - Row: 1
     Scale: 1
     Spacing: {x: 200, y: 0}
-  - Row: 2
+  - Row: 1
     Scale: 1.05
     Spacing: {x: 200, y: 0}
   - Row: 1
@@ -51,13 +51,22 @@ MonoBehaviour:
     Spacing: {x: 20, y: 200}
   - Row: 2
     Scale: 0.95
-    Spacing: {x: -10, y: 200}
-  - Row: 2
+    Spacing: {x: 20, y: 200}
+  - Row: 3
     Scale: 0.95
-    Spacing: {x: -10, y: 200}
-  - Row: 2
+    Spacing: {x: 20, y: 200}
+  - Row: 3
     Scale: 0.85
-    Spacing: {x: -25, y: 200}
-  - Row: 2
+    Spacing: {x: 20, y: 200}
+  - Row: 3
     Scale: 0.85
-    Spacing: {x: -25, y: 200}
+    Spacing: {x: 20, y: 200}
+  - Row: 3
+    Scale: 0.85
+    Spacing: {x: 20, y: 200}
+  - Row: 3
+    Scale: 0.85
+    Spacing: {x: 20, y: 200}
+  - Row: 3
+    Scale: 0.85
+    Spacing: {x: 20, y: 200}

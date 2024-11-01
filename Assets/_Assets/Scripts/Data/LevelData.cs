@@ -1,15 +1,32 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class LevelData
 {
     public List<BottleData> BottleDatas = new();
+    public bool isFree;
 }
 
+[Serializable]
 public class BottleData
 {
+    public int ID;
+    public Vector3Serialized pos;
+
     public List<WaterData> WaterDatas = new();
+
+    [Header("Obstacles")]
+    public bool isLock;
+    public bool IsHidden;
+    public bool HasTap;
+    public bool HasCap;
+    public int NumRotate;
+    public EColor CapColor;
+    public bool HasIce;
+
+    public BottleData() { }
 
     public BottleData(int num)
     {
@@ -20,21 +37,19 @@ public class BottleData
     }
 }
 
+[Serializable]
 public class WaterData
 {
     public EColor eColor;
 
-    public bool IsHidden;
+    [Header("Obstacles")]
+    public bool isHidden;
+    public LockKeyObstacle lockKeyObstacle;
 
     public WaterData()
     {
         eColor = EColor.None;
-        IsHidden = false;
-    }
-
-    public bool ShouldSerializeIsHidden()
-    {
-        return IsHidden;
+        isHidden = false;
     }
 }
 
@@ -54,3 +69,42 @@ public enum EColor
     C11,
     C12
 }
+
+
+#region Custom Attributes
+[Serializable]
+public class Vector3Serialized
+{
+    public float x, y, z;
+
+    public Vector3Serialized()
+    {
+
+    }
+
+    public Vector3Serialized(float x, float y, float z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public Vector3Serialized(Vector3 v)
+    {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
+
+    public Vector3 GetValue()
+    {
+        return new Vector3(x, y, z);
+    }
+}
+
+[Serializable]
+public class LockKeyObstacle
+{
+    public int bottleID;
+}
+#endregion

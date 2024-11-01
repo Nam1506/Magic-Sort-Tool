@@ -33,7 +33,7 @@ public class UICountTubeBtn : MonoBehaviour
         {
             if (isOn)
             {
-                TubeManager.Instance.SetupBottle(Value);
+                TubeManager.Instance.SetupBottles(Value);
             }
         });
     }

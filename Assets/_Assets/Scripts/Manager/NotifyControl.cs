@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,10 +11,17 @@ public class NotifyControl : SingletonBase<NotifyControl>
     public GameObject panelNotify;
     public GameObject panelConfirm;
 
+    public TextMeshProUGUI _messageConsole;
     public TMP_Text _message;
     public TMP_Text _messageConfirm;
 
     public Button confirmButton;
+
+    public void NotifyConsole(string message)
+    {
+        _messageConsole.text = message;
+        DOVirtual.DelayedCall(2, () => _messageConsole.text = "");
+    }
 
     public void Notify(string message)
     {

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +5,16 @@ public class TubeManager : SingletonBase<TubeManager>
 {
     [SerializeField] private Bottle bottlePrefab;
     [SerializeField] private Transform bottleContainer;
+    [SerializeField] private Transform poolContainer;
 
     [SerializeField] private Beardy.GridLayoutGroup gridLayoutGroup;
     [SerializeField] private ArrangeSO arrangeDataSO;
     [SerializeField] private Transform scaleParent;
 
+    private Queue<Bottle> poolBottles = new();
     public List<Bottle> bottles = new();
+
+    public Bottle bottleSelected;
 
     public void CreateBottle(BottleData data)
     {
@@ -19,24 +22,79 @@ public class TubeManager : SingletonBase<TubeManager>
 
         bottle.Init(data);
 
-        bottles.Add(bottle);
+        poolBottles.Enqueue(bottle);
     }
 
-    public void SetupBottle(int num)
+    public void LoadBottles(List<BottleData> listBottleData)
     {
-        int cur = bottles.Count;
-
-        while (cur++ < num)
+        SetupBottles(0);// Clear All bottles
+        
+        foreach (var bottleData in listBottleData)
         {
-            CreateBottle(new BottleData(4));
+            AddBottle(bottleData);
         }
+    }
 
-        for (int i = 0; i < bottles.Count; i++)
+    public void SetupBottles(int num)
+    {
+        int countBottles = bottles.Count;
+        if (num < bottles.Count)
         {
-            bottles[i].gameObject.SetActive(i < num);
+            while (num != countBottles)
+            {
+                RemoveBottle();
+                countBottles--;
+            }
+        }
+        else
+        {
+            while(num != countBottles)
+            {
+                AddBottle();
+                countBottles++;
+            }
         }
 
         Arrange(num);
+    }
+
+    public void AddBottle(BottleData bottleData = null)
+    {
+        if (bottles.Count >= 18)
+            return;
+
+        if (poolBottles.Count == 0)
+        {
+            CreateBottle(new BottleData(4));
+        }
+        Bottle bottle = poolBottles.Dequeue();
+        bottle.transform.SetParent(bottleContainer);
+        bottle.gameObject.SetActive(true);
+
+        if (bottleData != null) 
+            bottle.Init(bottleData);
+
+        bottles.Add(bottle);
+
+        Arrange(bottles.Count);
+    }
+
+    public void RemoveBottle(Bottle bottle = null)
+    {
+        if (bottles.Count <= 0)
+            return;
+
+        if (bottle == null)
+            bottle = bottles[bottles.Count - 1];
+
+        bottle.OnRemove();
+        bottle.transform.SetParent(poolContainer);
+        bottle.gameObject.SetActive(false);
+        poolBottles.Enqueue(bottle);
+
+        bottles.Remove(bottle);
+
+        Arrange(bottles.Count);
     }
 
     private void Arrange(int num)
@@ -48,5 +106,41 @@ public class TubeManager : SingletonBase<TubeManager>
         gridLayoutGroup.constraintCount = data.Row;
         scaleParent.localScale = Vector3.one * data.Scale / 2f;
         gridLayoutGroup.spacing = data.Spacing;
+    }
+
+    public void UpdateBottleSelected(Bottle bottle, bool isSelected)
+    {
+        if (isSelected)
+        {
+            bottleSelected?.SelectTube(false);
+            bottleSelected = bottle;
+        } else
+        {
+            bottleSelected = null;
+        }
+    }
+
+    public void RandomColor(int numColor)
+    {
+        for (int i = 0; i < numColor; i++)
+        {
+            bottles[i].SetRandomColor();
+        }
+    }
+
+    public void ClearColorTubeSelected()
+    {
+        if (bottleSelected != null)
+        {
+            bottleSelected.OnRemove();
+        }
+    }
+
+    public void GetBottlesData(ref List<BottleData> bottleDatas)
+    {
+        foreach (var bottle in bottles)
+        {
+            bottleDatas.Add(bottle.GetBottleData());
+        }
     }
 }

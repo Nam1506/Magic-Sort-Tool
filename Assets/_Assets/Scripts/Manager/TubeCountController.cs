@@ -9,7 +9,7 @@ public class TubeCountController : SingletonBase<TubeCountController>
     [SerializeField] private UICountTubeBtn uiCountTubeBtnPrefab;
     public ToggleGroup toggleGroup;
 
-    private const int MAX_TUBE = 17;
+    private const int MAX_TUBE = 18;
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class TubeCountController : SingletonBase<TubeCountController>
 
     private void SetupListCountTubeBtn()
     {
-        for (int i = 0; i < MAX_TUBE; i++)
+        for (int i = 0; i <= MAX_TUBE; i++)
         {
             var btn = Instantiate(uiCountTubeBtnPrefab, this.transform);
 

@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SFB;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEditor;
@@ -24,9 +22,10 @@ public class DataManager : SingletonBase<DataManager>
             Debug.Log("Đường dẫn thư mục: " + folderPath);
         }
     }
-
     #endregion
 
+
+    #region Save LevelData
     public void CheckLevelExistsToSave()
     {
         int level;
@@ -61,9 +60,35 @@ public class DataManager : SingletonBase<DataManager>
 
     public void SaveData(int level)
     {
-        File.WriteAllText(FolderPath + level + ".json", /*JsonConvert.SerializeObject(levelData)*/ " ");
+        // Init Level Data
+        LevelData levelData = new LevelData();
+        TubeManager.Instance.GetBottlesData(ref levelData.BottleDatas);
+
+        //Save
+        string json = JsonConvert.SerializeObject(levelData);
+
+        File.WriteAllText(FolderPath + level + ".json", json);
         AssetDatabase.Refresh();
 
-        Debug.Log("Save ok");
+        NotifyControl.Instance.Notify($"Lưu thành công level {level}");
     }
+
+    #endregion
+
+    #region Load LevelData
+    public void LoadLevelData(int level)
+    {
+        string levelPath = FolderPath + level + ".json";
+        if (!File.Exists(levelPath))
+        {
+            NotifyControl.Instance.NotifyConsole($"Không tồn tại level {level}");
+            return;
+        }
+
+        string json = File.ReadAllText(levelPath);
+        LevelData levelData = JsonConvert.DeserializeObject<LevelData>(json);
+
+        TubeManager.Instance.LoadBottles(levelData.BottleDatas);
+    }
+    #endregion
 }
