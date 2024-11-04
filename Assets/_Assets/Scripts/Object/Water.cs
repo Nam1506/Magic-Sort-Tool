@@ -11,6 +11,7 @@ public class Water : MonoBehaviour
     private EColor eColor = EColor.None;
 
     private bool isHidden;
+    private bool isKey;
     private LockKeyObstacle lockKeyObstacle;
 
     private void Reset()
@@ -26,8 +27,12 @@ public class Water : MonoBehaviour
 
     public void InitWater(WaterData waterData)
     {
-        keyObj.SetActive(false);
-        hiddenObj.SetActive(false);
+        isHidden = waterData.isHidden;
+        if (waterData.lockKeyObstacle != null )
+        {
+            isKey = true;
+            lockKeyObstacle = waterData.lockKeyObstacle;
+        }
 
         UpdateUI();
         SetColor(waterData.eColor);
@@ -36,6 +41,7 @@ public class Water : MonoBehaviour
     public void UpdateUI()
     {
         hiddenObj.SetActive(isHidden);
+        keyObj.SetActive(isKey);
     }
 
     private void OnWaterClick()
@@ -43,26 +49,42 @@ public class Water : MonoBehaviour
         //Add Obstacle
         if (ToolManager.Instance.obstacleController.HasWaterObstacle())
         {
-            if (ToolManager.Instance.obstacleController.isHiddenLayer)
+            if (ToolManager.Instance.obstacleController.dictCheckObstacle[EObstacleKey.isHiddenLayer])
             {
                 if (eColor == EColor.None)
                     NotifyControl.Instance.Notify("Ô chưa có màu");
                 else
                     isHidden = !isHidden;
             }
-            if (ToolManager.Instance.obstacleController.isKey)
+            if (ToolManager.Instance.obstacleController.dictCheckObstacle[EObstacleKey.isKey])
             {
-                
+                if (isKey)
+                {
+                    ToolManager.Instance.obstacleController.AddBottleLock(lockKeyObstacle.bottleID);
+                    isKey = false;
+                    lockKeyObstacle = null;
+                }
+                else if (ToolManager.Instance.obstacleController.CanAddKey())
+                {
+                    NotifyControl.Instance.NotifySelectBottleLock(AddKey);
+                }
             }
 
             UpdateUI();
             return;
         }
 
-
         //Change Color
         EColor newEColor = ToolManager.Instance.colorController.GetEColor();
         UpdateColor(newEColor);
+    }
+
+    private void AddKey(int bottleID)
+    {
+        isKey = true;
+        lockKeyObstacle = new LockKeyObstacle(bottleID);
+        ToolManager.Instance.obstacleController.RemoveBottleLock(bottleID);
+        keyObj.SetActive(true);
     }
 
     private void ResetColor()
@@ -86,20 +108,30 @@ public class Water : MonoBehaviour
         button.image.color = color;
     }
 
+    public EColor GetColor()
+    {
+        return eColor;
+    }
+
     public WaterData GetWaterData()
     {
         WaterData waterData = new WaterData();
         waterData.eColor = eColor;
         waterData.isHidden = isHidden;
-        waterData.lockKeyObstacle = new LockKeyObstacle();
+        waterData.lockKeyObstacle = lockKeyObstacle;
 
         return waterData;
     }
 
     public void OnRemove()
     {
+        keyObj.SetActive(false);
+        hiddenObj.SetActive(false);
+        isKey = false;
+        isHidden = false;
+        lockKeyObstacle = null;
+
         ColorPickerController.OnChangeWaterColor(eColor, -1);
-        eColor = EColor.None;
         button.image.color = Color.white;
     }
 

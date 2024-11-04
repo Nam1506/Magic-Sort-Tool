@@ -62,6 +62,7 @@ public class DataManager : SingletonBase<DataManager>
     {
         // Init Level Data
         LevelData levelData = new LevelData();
+        levelData.isFree = ToolManager.Instance.isFreeMap;
         TubeManager.Instance.GetBottlesData(ref levelData.BottleDatas);
 
         //Save
@@ -81,7 +82,9 @@ public class DataManager : SingletonBase<DataManager>
         string levelPath = FolderPath + level + ".json";
         if (!File.Exists(levelPath))
         {
+#if use_notify_console
             NotifyControl.Instance.NotifyConsole($"Không tồn tại level {level}");
+#endif
             return;
         }
 

@@ -6,6 +6,9 @@ public class ToolManager : SingletonBase<ToolManager>
 {
     public UIPanelLeft uiPanelLeft;
 
+    [Header("Data")]
+    public ColorSO colorSO;
+
     [Header("Controller")]
     public ColorPickerController colorController;
     public ObstacleController obstacleController;

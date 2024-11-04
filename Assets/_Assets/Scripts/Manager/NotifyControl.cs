@@ -1,7 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +8,11 @@ public class NotifyControl : SingletonBase<NotifyControl>
 {
     public GameObject panelNotify;
     public GameObject panelConfirm;
+
+    [Header("Panel Obstacles")]
+    public HiddenTubePanel tubePanel;
+    public KeyObstaclePanel keyObstaclePanel;
+    [Space]
 
     public TextMeshProUGUI _messageConsole;
     public TMP_Text _message;
@@ -44,6 +47,22 @@ public class NotifyControl : SingletonBase<NotifyControl>
 
             CancelConfirm();
         });
+    }
+
+    public void NotifyColorHiddenTube(Action<ColorData> action)
+    {
+        tubePanel.gameObject.SetActive(true);
+
+        tubePanel.OnPickColorHiddenTube = null;
+        tubePanel.OnPickColorHiddenTube += action;
+    }
+
+    public void NotifySelectBottleLock(Action<int> action)
+    {
+        keyObstaclePanel.gameObject.SetActive(true);
+
+        keyObstaclePanel.OnPickBottleLock = null;
+        keyObstaclePanel.OnPickBottleLock += action;
     }
 
     public void Cancel()

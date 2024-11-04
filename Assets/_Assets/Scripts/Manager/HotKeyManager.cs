@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class HotKeyManager : MonoBehaviour
 {
+    private int key0Value;
+    private int keyPad0Value;
+
+    private void Start()
+    {
+        key0Value = (int)KeyCode.Alpha0;
+        keyPad0Value = (int)KeyCode.Keypad0;
+    }
+
     private void Update()
     {
         if (Input.anyKeyDown)
@@ -18,49 +27,23 @@ public class HotKeyManager : MonoBehaviour
             #endregion
             // ------------------------------------
             #region Obstacle Active
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            for (int i = 1; i < 6; i++)
             {
-                ToolManager.Instance.obstacleController.isHiddenLayer = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                ToolManager.Instance.obstacleController.isHiddenTube = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                ToolManager.Instance.obstacleController.isLock = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                ToolManager.Instance.obstacleController.isKey = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                ToolManager.Instance.obstacleController.isTap = true;
+                if (Input.GetKeyDown((KeyCode)(key0Value + i)) || Input.GetKeyDown((KeyCode)(keyPad0Value + i)))
+                {
+                    ToolManager.Instance.obstacleController.ChangeStateToggle(i - 1, true);
+                }
             }
             #endregion
         }
 
         #region Obstacle UnActive
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        for (int i = 1; i < 6; i++)
         {
-            ToolManager.Instance.obstacleController.isHiddenLayer = false;
-        }
-        else if (Input.GetKeyUp(KeyCode.Alpha2))
-        {
-            ToolManager.Instance.obstacleController.isHiddenTube = false;
-        }
-        else if (Input.GetKeyUp(KeyCode.Alpha3))
-        {
-            ToolManager.Instance.obstacleController.isLock = false;
-        }
-        else if (Input.GetKeyUp(KeyCode.Alpha4))
-        {
-            ToolManager.Instance.obstacleController.isKey = false;
-        }
-        else if (Input.GetKeyUp(KeyCode.Alpha5))
-        {
-            ToolManager.Instance.obstacleController.isTap = false;
+            if (Input.GetKeyUp((KeyCode)(key0Value + i)) || Input.GetKeyUp((KeyCode)(keyPad0Value + i)))
+            {
+                ToolManager.Instance.obstacleController.ChangeStateToggle(i - 1, false);
+            }
         }
         #endregion
     }

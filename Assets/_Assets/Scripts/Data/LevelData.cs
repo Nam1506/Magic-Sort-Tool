@@ -12,25 +12,26 @@ public class LevelData
 [Serializable]
 public class BottleData
 {
-    public int ID;
-    public Vector3Serialized pos;
+    public int id;
+    public Vector3Serialized pos = new();
 
     public List<WaterData> WaterDatas = new();
 
     [Header("Obstacles")]
     public bool isLock;
     public bool IsHidden;
+    public EColor unlockColor;
     public bool HasTap;
     public bool HasCap;
     public int NumRotate;
     public EColor CapColor;
     public bool HasIce;
 
-    public BottleData() { }
-
-    public BottleData(int num)
+    public BottleData(int id = -1)
     {
-        for (int i = 0; i < num; i++)
+        this.id = id;
+
+        for (int i = 0; i < 4; i++)
         {
             WaterDatas.Add(new WaterData());
         }
@@ -106,5 +107,10 @@ public class Vector3Serialized
 public class LockKeyObstacle
 {
     public int bottleID;
+
+    public LockKeyObstacle(int bottleID)
+    {
+        this.bottleID = bottleID;
+    }   
 }
 #endregion

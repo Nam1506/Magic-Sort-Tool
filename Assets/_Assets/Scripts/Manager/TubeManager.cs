@@ -65,11 +65,12 @@ public class TubeManager : SingletonBase<TubeManager>
 
         if (poolBottles.Count == 0)
         {
-            CreateBottle(new BottleData(4));
+            CreateBottle(new BottleData(bottles.Count));
         }
         Bottle bottle = poolBottles.Dequeue();
         bottle.transform.SetParent(bottleContainer);
         bottle.gameObject.SetActive(true);
+        bottle.Init(new BottleData(bottles.Count));
 
         if (bottleData != null) 
             bottle.Init(bottleData);
