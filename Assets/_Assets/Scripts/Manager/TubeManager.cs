@@ -16,7 +16,7 @@ public class TubeManager : SingletonBase<TubeManager>
 
     public Bottle bottleSelected;
 
-    public void CreateBottle(BottleData data)
+    public void CreateBottle(TubeData data)
     {
         var bottle = Instantiate(bottlePrefab, bottleContainer);
 
@@ -25,7 +25,7 @@ public class TubeManager : SingletonBase<TubeManager>
         poolBottles.Enqueue(bottle);
     }
 
-    public void LoadBottles(List<BottleData> listBottleData)
+    public void LoadBottles(List<TubeData> listBottleData)
     {
         SetupBottles(0);// Clear All bottles
         
@@ -58,19 +58,19 @@ public class TubeManager : SingletonBase<TubeManager>
         Arrange(num);
     }
 
-    public void AddBottle(BottleData bottleData = null)
+    public void AddBottle(TubeData bottleData = null)
     {
         if (bottles.Count >= 18)
             return;
 
         if (poolBottles.Count == 0)
         {
-            CreateBottle(new BottleData(bottles.Count));
+            CreateBottle(new TubeData(bottles.Count));
         }
         Bottle bottle = poolBottles.Dequeue();
         bottle.transform.SetParent(bottleContainer);
         bottle.gameObject.SetActive(true);
-        bottle.Init(new BottleData(bottles.Count));
+        bottle.Init(new TubeData(bottles.Count));
 
         if (bottleData != null) 
             bottle.Init(bottleData);
@@ -137,7 +137,7 @@ public class TubeManager : SingletonBase<TubeManager>
         }
     }
 
-    public void GetBottlesData(ref List<BottleData> bottleDatas)
+    public void GetBottlesData(ref List<TubeData> bottleDatas)
     {
         foreach (var bottle in bottles)
         {

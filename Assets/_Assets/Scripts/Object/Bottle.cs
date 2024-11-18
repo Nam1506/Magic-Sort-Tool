@@ -50,7 +50,7 @@ public class Bottle : MonoBehaviour
         }
     }
 
-    public void Init(BottleData data)
+    public void Init(TubeData data)
     {
         for (int i = 0; i < waters.Count; i++)
         {
@@ -158,6 +158,7 @@ public class Bottle : MonoBehaviour
     private void CreateHiddenTube(ColorData colorData)
     {
         isHidden = true;
+        unlockColor = colorData.eColor;
 
         hiddenObj.SetActive(true);
         colorUnHidenImg.color = colorData.color;
@@ -202,9 +203,9 @@ public class Bottle : MonoBehaviour
         TubeManager.Instance.UpdateBottleSelected(this, isSelected);
     }
 
-    public BottleData GetBottleData()
+    public TubeData GetBottleData()
     {
-        BottleData bottleData = new BottleData(id);
+        TubeData bottleData = new TubeData(id);
 
         bottleData.WaterDatas.Clear();
         foreach (var water in waters)

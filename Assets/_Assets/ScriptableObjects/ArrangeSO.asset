@@ -52,21 +52,21 @@ MonoBehaviour:
   - Row: 2
     Scale: 0.95
     Spacing: {x: 20, y: 200}
-  - Row: 3
+  - Row: 2
     Scale: 0.95
     Spacing: {x: 20, y: 200}
-  - Row: 3
+  - Row: 2
     Scale: 0.85
     Spacing: {x: 20, y: 200}
-  - Row: 3
+  - Row: 2
     Scale: 0.85
     Spacing: {x: 20, y: 200}
-  - Row: 3
+  - Row: 2
     Scale: 0.85
     Spacing: {x: 20, y: 200}
-  - Row: 3
+  - Row: 2
     Scale: 0.85
     Spacing: {x: 20, y: 200}
-  - Row: 3
+  - Row: 2
     Scale: 0.85
     Spacing: {x: 20, y: 200}

@@ -2,7 +2,6 @@
 using SFB;
 using System.IO;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class DataManager : SingletonBase<DataManager>
@@ -63,13 +62,12 @@ public class DataManager : SingletonBase<DataManager>
         // Init Level Data
         LevelData levelData = new LevelData();
         levelData.isFree = ToolManager.Instance.isFreeMap;
-        TubeManager.Instance.GetBottlesData(ref levelData.BottleDatas);
+        TubeManager.Instance.GetBottlesData(ref levelData.listTubeData);
 
         //Save
         string json = JsonConvert.SerializeObject(levelData);
 
         File.WriteAllText(FolderPath + level + ".json", json);
-        AssetDatabase.Refresh();
 
         NotifyControl.Instance.Notify($"Lưu thành công level {level}");
     }
@@ -91,7 +89,7 @@ public class DataManager : SingletonBase<DataManager>
         string json = File.ReadAllText(levelPath);
         LevelData levelData = JsonConvert.DeserializeObject<LevelData>(json);
 
-        TubeManager.Instance.LoadBottles(levelData.BottleDatas);
+        TubeManager.Instance.LoadBottles(levelData.listTubeData);
     }
     #endregion
 }

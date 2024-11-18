@@ -28,14 +28,14 @@ public static class Menu
 
             for (int i = 0; i < bottleDatas.Length; i += 4)
             {
-                BottleData bottleData = new BottleData(id++);
+                TubeData bottleData = new TubeData(id++);
 
                 for (int j = 3; j >= 0; j--)
                 {
                     bottleData.WaterDatas[3 - j].eColor = (EColor)bottleDatas[i + j];
                 }
 
-                levelData.BottleDatas.Add(bottleData);
+                levelData.listTubeData.Add(bottleData);
             }
 
             var objSplit = obj.name.Split("_");

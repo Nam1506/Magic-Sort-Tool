@@ -5,12 +5,12 @@ using UnityEngine;
 [Serializable]
 public class LevelData
 {
-    public List<BottleData> BottleDatas = new();
+    public List<TubeData> listTubeData = new();
     public bool isFree;
 }
 
 [Serializable]
-public class BottleData
+public class TubeData
 {
     public int id;
     public Vector3Serialized pos = new();
@@ -27,7 +27,7 @@ public class BottleData
     public EColor CapColor;
     public bool HasIce;
 
-    public BottleData(int id = -1)
+    public TubeData(int id = -1)
     {
         this.id = id;
 
