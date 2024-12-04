@@ -14,6 +14,8 @@ public class ToolManager : SingletonBase<ToolManager>
     public ObstacleController obstacleController;
 
     public bool isFreeMap;
+    public int timeLimit;
+    public EDifficulty difficulty;
 
     private void Update()
     {
@@ -27,5 +29,20 @@ public class ToolManager : SingletonBase<ToolManager>
     {
         isFreeMap = !isFreeMap;
         return isFreeMap;
+    }
+
+    public void LoadData(LevelData levelData)
+    {
+        isFreeMap = levelData.isFree;
+        timeLimit = levelData.timeLimit;
+        difficulty = levelData.difficulty;
+
+        SetUI();
+    }
+
+    private void SetUI()
+    {
+        uiPanelLeft.LoadDifficulty(difficulty);
+        uiPanelLeft.LoadTimeLimit(timeLimit);
     }
 }

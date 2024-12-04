@@ -7,6 +7,8 @@ public class LevelData
 {
     public List<TubeData> listTubeData = new();
     public bool isFree;
+    public EDifficulty difficulty;
+    public int timeLimit;
 }
 
 [Serializable]
@@ -69,6 +71,14 @@ public enum EColor
     C10,
     C11,
     C12
+}
+
+
+public enum EDifficulty
+{
+    Normal = 0,
+    Hard = 1,
+    SuperHard = 2,
 }
 
 

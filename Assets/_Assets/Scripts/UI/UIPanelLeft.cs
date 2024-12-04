@@ -1,4 +1,7 @@
-﻿using TMPro;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +18,12 @@ public class UIPanelLeft : MonoBehaviour
     [SerializeField] private Button freeMapBtn;
     [SerializeField] private TextMeshProUGUI textStateFreeMap;
 
+    [Header("TimeLimit")]
+    [SerializeField] private TMP_InputField inputTime;
+
+    [Header("Difficulty")]
+    [SerializeField] private TMP_Dropdown dropdownDifficulty;
+
     private void Awake()
     {
         saveBtn.onClick.AddListener(() =>
@@ -28,12 +37,20 @@ public class UIPanelLeft : MonoBehaviour
 
         nextLevelBtn.onClick.AddListener(() => OnClickLevelTrans(1));
         prevLevelBtn.onClick.AddListener(() => OnClickLevelTrans(-1));
+
+        inputTime.onValueChanged.AddListener((timeStr) => { ChangeTimeLimit(timeStr); });
+        dropdownDifficulty.onValueChanged.AddListener((option) => { ChangeDifficulty(option); });
+    }
+
+    private void Start()
+    {
+        DropdownUtil.SetupDropdown<EDifficulty>(dropdownDifficulty);
     }
 
     private void OnClickLoadLevel()
     {
         int level;
-        if (!int.TryParse(ToolManager.Instance.uiPanelLeft.levelInputField.text, out level))
+        if (!int.TryParse(levelInputField.text, out level))
         {
             NotifyControl.Instance.Notify("Chưa nhập level");
             return;
@@ -66,5 +83,37 @@ public class UIPanelLeft : MonoBehaviour
             textStateFreeMap.text = "FreeMap: Off";
             freeMapBtn.image.color = Color.white;
         }
+    }
+
+    private void ChangeTimeLimit(string timeStr)
+    {
+        int timeLimit = 60;
+
+        int.TryParse(timeStr, out timeLimit);
+
+        ToolManager.Instance.timeLimit = timeLimit;
+    }
+
+    private void ChangeTimeLimit(int timeLimit)
+    {
+        LoadTimeLimit(timeLimit);
+        ToolManager.Instance.timeLimit = timeLimit;
+    }
+
+    public void LoadTimeLimit(int timeLimit)
+    {
+        inputTime.text = timeLimit.ToString();
+    }
+
+    public void LoadDifficulty(EDifficulty difficulty)
+    {
+        dropdownDifficulty.value = (int)difficulty;
+    }
+
+    private void ChangeDifficulty(int option)
+    {
+        EDifficulty eDifficulty = (EDifficulty)option;
+
+        ToolManager.Instance.difficulty = eDifficulty;
     }
 }

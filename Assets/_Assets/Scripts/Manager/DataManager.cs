@@ -62,6 +62,15 @@ public class DataManager : SingletonBase<DataManager>
         // Init Level Data
         LevelData levelData = new LevelData();
         levelData.isFree = ToolManager.Instance.isFreeMap;
+        levelData.timeLimit = ToolManager.Instance.timeLimit;
+        levelData.difficulty = ToolManager.Instance.difficulty;
+
+        if(levelData.timeLimit <= 0)
+        {
+            NotifyControl.Instance.Notify("Vui lòng nhập thời gian hợp lệ");
+            return;
+        }
+
         TubeManager.Instance.GetBottlesData(ref levelData.listTubeData);
 
         //Save
