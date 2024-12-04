@@ -33,6 +33,8 @@ public class ToolManager : SingletonBase<ToolManager>
 
     public void LoadData(LevelData levelData)
     {
+        colorController.ResetCounterColor();
+
         isFreeMap = levelData.isFree;
         timeLimit = levelData.timeLimit;
         difficulty = levelData.difficulty;

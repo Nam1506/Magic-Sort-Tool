@@ -20,6 +20,13 @@ public class ColorButton : MonoBehaviour
 
     public void SetData(ColorData colorData)
     {
+        if (colorData.eColor == EColor.None)
+        {
+            Debug.Log("None Color");
+        }
+
+        Debug.Log("other color");
+
         numUsed = 0;
         eColor = colorData.eColor;
         button.image.color = colorData.color;
@@ -38,6 +45,12 @@ public class ColorButton : MonoBehaviour
     public void UpdateNumUsed(int changedValue)
     {
         numUsed += changedValue;
+        numText.text = numUsed.ToString();
+    }
+
+    public void ResetNumWater()
+    {
+        numUsed = 0;
         numText.text = numUsed.ToString();
     }
 }

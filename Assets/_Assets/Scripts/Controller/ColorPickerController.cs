@@ -131,6 +131,10 @@ public class ColorPickerController : MonoBehaviour
         }
     }
 
+    public void ResetCounterColor()
+    {
+    }
+
     private void UpdateCounterColor(EColor eColor, int changedValue)
     {
         dictColorButtons[eColor].UpdateNumUsed(changedValue);

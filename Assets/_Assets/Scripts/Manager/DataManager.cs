@@ -98,6 +98,7 @@ public class DataManager : SingletonBase<DataManager>
         string json = File.ReadAllText(levelPath);
         LevelData levelData = JsonConvert.DeserializeObject<LevelData>(json);
 
+        ToolManager.Instance.LoadData(levelData);
         TubeManager.Instance.LoadBottles(levelData.listTubeData);
     }
     #endregion
