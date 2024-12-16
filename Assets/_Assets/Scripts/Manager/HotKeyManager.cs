@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class HotKeyManager : MonoBehaviour
+public class HotKeyManager : SingletonBase<HotKeyManager>
 {
     private int key0Value;
     private int keyPad0Value;
+
+    public bool IsHoldShift {  get; private set; }
 
     private void Start()
     {
@@ -35,7 +37,13 @@ public class HotKeyManager : MonoBehaviour
                 }
             }
             #endregion
+
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+                IsHoldShift = true;
         }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+            IsHoldShift = false;
 
         #region Obstacle UnActive
         for (int i = 1; i < 6; i++)

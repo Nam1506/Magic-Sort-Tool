@@ -143,14 +143,14 @@ public class Bottle : MonoBehaviour
             return false;
         }
 
-        foreach (var water in waters)
-        {
-            if (water.GetColor() == EColor.None)
-            {
-                NotifyControl.Instance.NotifyConsole("Vui Lòng điền màu cho tất cả các ô");
-                return false;
-            }
-        }
+        //foreach (var water in waters)
+        //{
+        //    if (water.GetColor() == EColor.None)
+        //    {
+        //        NotifyControl.Instance.NotifyConsole("Vui Lòng điền màu cho tất cả các ô");
+        //        return false;
+        //    }
+        //}
 
         return true;
     }
@@ -223,5 +223,23 @@ public class Bottle : MonoBehaviour
         bottleData.CapColor = CapColor;// EColor
 
         return bottleData;
+    }
+
+    private void SetShowHidden(bool isShow)
+    {
+        if (!isHidden)
+            return;
+
+        hiddenObj.SetActive(!isShow);
+    }
+
+    private void OnEnable()
+    {
+        ToolManager.OnShowTube += SetShowHidden;
+    }
+
+    private void OnDisable()
+    {
+        ToolManager.OnShowTube -= SetShowHidden;
     }
 }

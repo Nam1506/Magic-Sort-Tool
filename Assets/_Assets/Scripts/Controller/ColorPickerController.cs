@@ -129,10 +129,25 @@ public class ColorPickerController : MonoBehaviour
         {
             listColorSelected.Add(eColor);
         }
+
+        if (HotKeyManager.Instance.IsHoldShift)
+            return;
+
+        foreach (var item in dictColorButtons)
+        {
+            if (item.Key == eColor)
+                continue;
+
+            item.Value.SetSelectedColor(false);
+        }
     }
 
     public void ResetCounterColor()
     {
+        foreach (var item in dictColorButtons)
+        {
+            item.Value.ResetNumWater();
+        }
     }
 
     private void UpdateCounterColor(EColor eColor, int changedValue)

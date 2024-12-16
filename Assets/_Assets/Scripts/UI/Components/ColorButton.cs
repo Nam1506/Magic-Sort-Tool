@@ -46,10 +46,20 @@ public class ColorButton : MonoBehaviour
     {
         numUsed += changedValue;
         numText.text = numUsed.ToString();
+        if (EColor.None == eColor)
+        {
+            Debug.Log("Update " + numUsed);
+        }
+
     }
 
     public void ResetNumWater()
     {
+        if (EColor.None == eColor)
+        {
+            Debug.Log("None;;;");
+        }
+
         numUsed = 0;
         numText.text = numUsed.ToString();
     }

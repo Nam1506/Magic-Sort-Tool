@@ -135,13 +135,23 @@ public class Water : MonoBehaviour
         button.image.color = Color.white;
     }
 
+    private void SetShowHidden(bool isShow)
+    {
+        if (!isHidden)
+            return;
+
+        hiddenObj.SetActive(!isShow);
+    }
+
     private void OnEnable()
     {
         ColorPickerController.OnResetColor += ResetColor;
+        ToolManager.OnShowLayer += SetShowHidden;
     }
 
     private void OnDisable()
     {
         ColorPickerController.OnResetColor -= ResetColor;
+        ToolManager.OnShowLayer -= SetShowHidden;
     }
 }

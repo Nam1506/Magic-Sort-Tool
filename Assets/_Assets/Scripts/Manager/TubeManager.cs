@@ -28,7 +28,9 @@ public class TubeManager : SingletonBase<TubeManager>
     public void LoadBottles(List<TubeData> listBottleData)
     {
         SetupBottles(0);// Clear All bottles
-        
+
+        ToolManager.Instance.colorController.ResetCounterColor();
+
         foreach (var bottleData in listBottleData)
         {
             AddBottle(bottleData);
@@ -70,10 +72,11 @@ public class TubeManager : SingletonBase<TubeManager>
         Bottle bottle = poolBottles.Dequeue();
         bottle.transform.SetParent(bottleContainer);
         bottle.gameObject.SetActive(true);
-        bottle.Init(new TubeData(bottles.Count));
 
         if (bottleData != null) 
             bottle.Init(bottleData);
+        else
+            bottle.Init(new TubeData(bottles.Count));
 
         bottles.Add(bottle);
 
@@ -111,14 +114,31 @@ public class TubeManager : SingletonBase<TubeManager>
 
     public void UpdateBottleSelected(Bottle bottle, bool isSelected)
     {
-        if (isSelected)
-        {
-            bottleSelected?.SelectTube(false);
-            bottleSelected = bottle;
-        } else
+        if (!isSelected)
         {
             bottleSelected = null;
+            return;
         }
+
+        if (HotKeyManager.Instance.IsHoldShift && bottleSelected)
+        {
+            SwapBottle(bottle, bottleSelected);
+        }
+
+        bottleSelected?.SelectTube(false);
+        bottleSelected = bottle;
+    }
+
+    private void SwapBottle(Bottle bottle1, Bottle bottle2)
+    {
+        TubeData tubeData1 = bottle1.GetBottleData();
+        TubeData tubeData2 = bottle2.GetBottleData();
+
+        bottle1.OnRemove();
+        bottle2.OnRemove();
+
+        bottle1.Init(tubeData2);
+        bottle2.Init(tubeData1);
     }
 
     public void RandomColor(int numColor)
@@ -142,6 +162,14 @@ public class TubeManager : SingletonBase<TubeManager>
         foreach (var bottle in bottles)
         {
             bottleDatas.Add(bottle.GetBottleData());
+        }
+    }
+
+    public void ClickClearAll()
+    {
+        foreach (var bottle in bottles)
+        {
+            bottle.OnRemove();
         }
     }
 }
